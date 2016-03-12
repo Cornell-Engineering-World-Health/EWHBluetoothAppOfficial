@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
@@ -101,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
                                 // Send the obtained bytes to the UI activity
                                 Handler mHandler = new Handler();
                                 int MESSAGE_READ = 1; //NEED TO FIGURE OUT WHAT THIS VALUE SHOULD BE
-                                mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
-                                        .sendToTarget();
+                                Message newMessage = mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer);
+                                System.out.println(newMessage.toString());
+
                             } catch (IOException e) {
                                 break;
                             }
