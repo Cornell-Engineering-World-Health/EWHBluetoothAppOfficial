@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     //For bluetooth device list
     ArrayList<String> deviceList = new ArrayList<String>();
     private BluetoothAdapter adapter;
-    private static final UUID MY_UUID = UUID.fromString("0000110E-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
 
                         while(true)
                         {
+                            /*
+                            Note to self: current state is that the message is being recieved succesfully from
+                            the server socket, but is not printing as a string message
+
+                            May be related to the MESSAGE_READ parameter
+
+                            Next todo: figure out how to convert the message recieved into a readable string
+                             */
                             try {
                                 // Read from the InputStream
                                 bytes = in.read(buffer);
@@ -103,7 +111,21 @@ public class MainActivity extends AppCompatActivity {
                                 Handler mHandler = new Handler();
                                 int MESSAGE_READ = 1; //NEED TO FIGURE OUT WHAT THIS VALUE SHOULD BE
                                 Message newMessage = mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer);
-                                System.out.println(newMessage.toString());
+
+
+                                Bundle temp = newMessage.getData();
+                                StringBuilder sb = new StringBuilder();
+                                Set<String> keySet = temp.keySet();
+                                for (final String key: keySet) {
+                                    sb.append('\"');
+                                    sb.append(key);
+                                    sb.append("\"=\"");
+                                    sb.append(temp.get(key));
+                                    sb.append("\", ");
+                                }
+                                System.out.println("DATA RECIEVEDDDDDDD" + sb.toString());
+
+                                //System.out.println(newMessage.getData());
 
                             } catch (IOException e) {
                                 break;
