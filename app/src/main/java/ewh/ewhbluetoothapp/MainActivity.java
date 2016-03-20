@@ -1,6 +1,7 @@
 package ewh.ewhbluetoothapp;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -13,16 +14,26 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.UUID;
+
 import java.util.Set;
 
 /**
@@ -34,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     //For bluetooth device list
     ArrayList<String> deviceList = new ArrayList<String>();
+
+    ArrayList<String> frontEndListItems=new ArrayList<String>();
+    ArrayAdapter<String> frontEndAdapter;
+
+    private StringBuilder dataString = new StringBuilder();
     private BluetoothAdapter adapter;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -42,14 +58,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        requestWindowFeature(getWindow().FEATURE_ACTION_BAR);
+
 
         listView = (ListView) findViewById(R.id.listView);
-        adapter = BluetoothAdapter.getDefaultAdapter();
-        adapter.startDiscovery();
+
+        frontEndListItems.add("Well Monitor");
+        frontEndListItems.add("Other Device 1");
+        frontEndListItems.add("Other Device 2");
+
+        frontEndAdapter=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                frontEndListItems);
+
+        listView.setAdapter(frontEndAdapter);
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String itemSelected = frontEndAdapter.getItem(position);
+                System.out.println("Item selected: " + itemSelected);
+
+                if (position == 0) {
+                    Intent intent = new Intent(MainActivity.this, MetricListActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        //adapter = BluetoothAdapter.getDefaultAdapter(); UNCOMMENT THIS WHEN ACTUALLY USING
+        //adapter.startDiscovery(); UNCOMMENT THIS WHEN ACTUALLY USING
 
 //      Facilitate communication between components
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(mReceiver, filter);                                    // mReceiver will be called with any broadcast Intent that matches filter
+        //IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND); UNCOMMENT THIS WHEN ACTUALLY USING
+        //registerReceiver(mReceiver, filter);   UNCOMMENT THIS WHEN ACTUALLY USING                                 // mReceiver will be called with any broadcast Intent that matches filter
                                                                                 // (bluetooth device found)
     }
 
@@ -112,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                                 int MESSAGE_READ = 1; //NEED TO FIGURE OUT WHAT THIS VALUE SHOULD BE
                                 Message newMessage = mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer);
 
-
+                                /*
                                 Bundle temp = newMessage.getData();
                                 StringBuilder sb = new StringBuilder();
                                 Set<String> keySet = temp.keySet();
@@ -124,8 +166,43 @@ public class MainActivity extends AppCompatActivity {
                                     sb.append("\", ");
                                 }
                                 System.out.println("DATA RECIEVEDDDDDDD" + sb.toString());
+**/
+                               // System.out.println("DATA RECIEVEDDDD" + newMessage.obj);
 
-                                //System.out.println(newMessage.getData());
+                                byte[] tempArray = (byte[]) newMessage.obj;
+
+                              //  System.out.println("temp array: ");
+                                String realMessage = " ";
+
+                                for(int i = 0; i < tempArray.length; i++)
+                                {
+                                    //if(tempArray[i]==0)
+                                      //  break;
+                                    byte[] tempArray3 = new byte[]{tempArray[i]};
+                                    String temp = new String(tempArray3, "UTF8");
+                                    realMessage = realMessage + temp;
+                                }
+
+                                System.out.println(realMessage);
+
+                                //byte[] tempArray2 = new byte[]{tempArray[1]};
+
+                               // String test1 = bytesToStringUTFNIO(tempArray);
+                             //   System.out.println("TESTTTT" + test1);
+                            //    String test = new String(tempArray2, "UTF8");
+                             //   System.out.println("VALUE RECIEVED" + test);
+/*
+                                String readMessage = (String) newMessage.obj;                                                                // msg.arg1 = bytes from connect thread
+                                dataString.append(readMessage);                             //keep appending to string until ~
+                                int endOfLineIndex = dataString.indexOf("~");               // determine the end-of-line
+                                if (endOfLineIndex > 0) {                                   // make sure there data before ~
+                                    if (dataString.charAt(0) == '#')                        //if it starts with # we know it is what we are looking for
+                                    {
+                                        String sensor = dataString.substring(1, 5);         //get sensor value from string between indices 1-5
+                                    }
+                                    dataString.delete(0, dataString.length());               //clear all string data
+                                }
+                                **/
 
                             } catch (IOException e) {
                                 break;
@@ -147,4 +224,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void deviceSelected()
+    {
+        System.out.println("DEVICE SELECTED!");
+    }
+
+    public static String bytesToStringUTFNIO(byte[] bytes) {
+        CharBuffer cBuffer = ByteBuffer.wrap(bytes).asCharBuffer();
+        return cBuffer.toString();
+    }
 }
