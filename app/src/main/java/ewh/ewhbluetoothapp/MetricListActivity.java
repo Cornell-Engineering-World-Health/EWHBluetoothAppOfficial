@@ -23,14 +23,12 @@ public class MetricListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metric_list);
 
-        /**
-
         listView2 = (ListView) findViewById(R.id.listView2);
 
-        metricList.add("Temperature --- 15 deg C");
-        metricList.add("Conductivity --- Value 2");
-        metricList.add("pH --- 13");
-        metricList.add("Turbidity --- 7");
+        metricList.add("Temperature           15 deg C");
+        metricList.add("Conductivity          Value 2");
+        metricList.add("pH                    13");
+        metricList.add("Turbidity             7");
 
         metricListAdapter=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
@@ -47,12 +45,11 @@ public class MetricListActivity extends AppCompatActivity {
                 System.out.println("Item selected: " + itemSelected);
 
                 if (position == 0) {
-                    Intent intent = new Intent(MetricListActivity.this, IndividualExampleActivity.class);
+                    Intent intent = new Intent(MetricListActivity.this, MetricIndividualView.class);
                     startActivity(intent);
                 }
 
             }
         });
-         **/
     }
 }

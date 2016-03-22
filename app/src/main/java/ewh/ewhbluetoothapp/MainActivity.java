@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        requestWindowFeature(getWindow().FEATURE_ACTION_BAR);
-
-
         listView = (ListView) findViewById(R.id.listView);
 
         frontEndListItems.add("Well Monitor");
