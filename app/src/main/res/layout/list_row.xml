@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-    android:id="@+id/value"
+    android:id="@+id/metricName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Temperature DUMMY"
@@ -15,10 +15,10 @@
     android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/tempValue"
+        android:id="@+id/metricValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/value"
+        android:layout_below="@id/metricName"
         android:textColor="#343434"
         android:textSize="10dip"
         android:layout_marginTop="1dip"
@@ -27,7 +27,8 @@
     <ImageView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_keyboard_arrow_right"
+        android:layout_alignBottom="@+id/metricValue"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
