@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">EWHBluetoothApp</string>
+    <string name="app_name">EWH Bluetooth App</string>
     <string name="title_activity_metric_list_page">MetricListPage</string>
+    <string name="title_activity_single_metric_display">SingleMetricDisplay</string>
 </resources>

@@ -45,7 +45,7 @@ public class MetricListActivity extends AppCompatActivity {
                 System.out.println("Item selected: " + itemSelected);
 
                 if (position == 0) {
-                    Intent intent = new Intent(MetricListActivity.this, MetricIndividualView.class);
+                    Intent intent = new Intent(MetricListActivity.this, SingleMetricDisplay.class);
                     startActivity(intent);
                 }
 
