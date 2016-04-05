@@ -1,0 +1,13 @@
+package ewh.ewhbluetoothapp;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class MetricIndividualView extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_metric_individual_view);
+    }
+}
