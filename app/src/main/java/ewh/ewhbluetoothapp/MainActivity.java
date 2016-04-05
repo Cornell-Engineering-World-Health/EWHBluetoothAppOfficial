@@ -37,7 +37,8 @@ import java.util.UUID;
 import java.util.Set;
 
 /**
- * created based on http://stackoverflow.com/questions/10795424/how-to-get-the-bluetooth-devices-as-a-list tutorial
+ *
+ * Created with reference http://stackoverflow.com/questions/10795424/how-to-get-the-bluetooth-devices-as-a-list tutorial
  */
 
 public class MainActivity extends AppCompatActivity {
