@@ -9,6 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.util.ArrayList;
 
 // Custom ListView http://www.androidinterview.com/android-custom-listview-with-image-and-text-using-arrayadapter/
@@ -24,17 +27,34 @@ public class MetricListActivity extends ListActivity {
 
     String[] metricName = {"Temperature", "Conductivity", "pH", "Turbidity", "Usage"};
     // To get metric values from json
-    Integer[] metricValue = {};
+    Integer[] metricValue = new Integer[5];
+
+    static String selectedMetric = "";
+    static String selectedValue = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metric_list);
 
+        listView2 = (ListView) findViewById(R.id.listView2);
+
+        JSONProcessor newData = null;
+
+        try {
+            newData = new JSONProcessor(MainActivity.recievedMessage);
+
+            metricValue[0] = newData.getMetric(newData.TEMPERATURE);
+            metricValue[1] = newData.getMetric(newData.CONDUCTIVITY);
+            metricValue[2] = newData.getMetric(newData.PH);
+            metricValue[3] = newData.getMetric(newData.TURBIDITY);
+            metricValue[4] = newData.getMetric(newData.USAGE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         CustomListAdaptor adaptor = new CustomListAdaptor(this, metricName, metricValue);
 
-
-        listView2 = (ListView) findViewById(R.id.listView2);
 
 //        metricList.add("Temperature           15 deg C");
 //        metricList.add("Conductivity          Value 2");
@@ -54,6 +74,9 @@ public class MetricListActivity extends ListActivity {
 
                 String itemSelected = metricListAdapter.getItem(position);
                 System.out.println("Item selected: " + itemSelected);
+
+                selectedMetric = itemSelected;
+                selectedValue = "" + metricValue[position];
 
                 if (position == 0) {
                     Intent intent = new Intent(MetricListActivity.this, SingleMetricDisplay.class);

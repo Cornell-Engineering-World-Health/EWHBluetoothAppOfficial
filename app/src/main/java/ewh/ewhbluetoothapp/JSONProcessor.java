@@ -12,12 +12,11 @@ import org.json.simple.parser.ParseException;
  */
 public class JSONProcessor {
 
-    private final String TEMPERATURE = "TEMPERATURE";
-    private final String PH = "PH";
-    private final String TURBIDITY = "TURBIDITY";
-    private final String USAGE = "USAGE";
-    private final String CONDUCTIVITY = "CONDUCTIVITY";
-
+    final String TEMPERATURE = "TEMPERATURE";
+    final String PH = "PH";
+    final String TURBIDITY = "TURBIDITY";
+    final String USAGE = "USAGE";
+    final String CONDUCTIVITY = "CONDUCTIVITY";
 
     JSONObject currentJSON;
 
@@ -28,20 +27,20 @@ public class JSONProcessor {
         currentJSON = (JSONObject) parser.parse(JSONFile);
     }
 
-    public String getMetric(String metricName) {
+    public int getMetric(String metricName) {
         switch (metricName) {
             case TEMPERATURE:
-                return (String) currentJSON.get(TEMPERATURE);
+                return Integer.parseInt((String) currentJSON.get(TEMPERATURE));
             case PH:
-                return (String) currentJSON.get(PH);
+                return Integer.parseInt((String) currentJSON.get(PH));
             case TURBIDITY:
-                return (String) currentJSON.get(TURBIDITY);
+                return Integer.parseInt((String) currentJSON.get(TURBIDITY));
             case USAGE:
-                return (String) currentJSON.get(USAGE);
+                return Integer.parseInt((String) currentJSON.get(USAGE));
             case CONDUCTIVITY:
-                return (String) currentJSON.get(CONDUCTIVITY);
+                return Integer.parseInt((String) currentJSON.get(CONDUCTIVITY));
             default:
-                return "";
+                return 0;
         }
     }
 }

@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter adapter;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
+    static String recievedMessage = "{\"TEMPERATURE\":\"20\"," +
+                                    "\"PH\":\"30\"," +
+                                    "\"TURBIDITY\":\"40\"," +
+                                    "\"CONDUCTIVITY\":\"50\"," +
+                                    "\"USAGE\":\"60\"}";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 String itemSelected = frontEndAdapter.getItem(position);
                 System.out.println("Item selected: " + itemSelected);
 
-                if (position == 0) {
-                    Intent intent = new Intent(MainActivity.this, MetricListActivity.class);
-                    startActivity(intent);
-                }
+                System.out.println("HEREEEEEEE");
+                Intent intent = new Intent(MainActivity.this, MetricListActivity.class);
+                startActivity(intent);
             }
         });
         //adapter = BluetoothAdapter.getDefaultAdapter(); UNCOMMENT THIS WHEN ACTUALLY USING
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                                                                                 // (bluetooth device found)
     }
 
+    /**
     @Override
     protected void onDestroy() {
         unregisterReceiver(mReceiver);
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 //  Component that responds to system-wide broadcast announcements (bluetooth device found)
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {                 // BR only valid for duration of onReceive call; modifies current result
+
             String action = intent.getAction();                                 // Describe general way info in intent should be handled
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {                  // Broadcast Action: Remote device discovered
                 BluetoothDevice device = intent                                 // contains the BluetoothDevice that the intent applies to
@@ -143,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                             May be related to the MESSAGE_READ parameter
 
                             Next todo: figure out how to convert the message recieved into a readable string
-                             */
+
                             try {
                                 // Read from the InputStream
                                 bytes = in.read(buffer);
@@ -164,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                                     sb.append("\", ");
                                 }
                                 System.out.println("DATA RECIEVEDDDDDDD" + sb.toString());
-**/
+
                                // System.out.println("DATA RECIEVEDDDD" + newMessage.obj);
 
                                 byte[] tempArray = (byte[]) newMessage.obj;
@@ -183,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 System.out.println(realMessage);
 
+                                recievedMessage = realMessage;
+
                                 //byte[] tempArray2 = new byte[]{tempArray[1]};
 
                                // String test1 = bytesToStringUTFNIO(tempArray);
@@ -200,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     dataString.delete(0, dataString.length());               //clear all string data
                                 }
-                                **/
+
 
                             } catch (IOException e) {
                                 break;
@@ -232,4 +241,5 @@ public class MainActivity extends AppCompatActivity {
         CharBuffer cBuffer = ByteBuffer.wrap(bytes).asCharBuffer();
         return cBuffer.toString();
     }
+        **/
 }

@@ -39,10 +39,11 @@ public class SendServer extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_server);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         value = (TextView) findViewById(R.id.value1);
         button = (Button) findViewById(R.id.sendData);
@@ -53,6 +54,7 @@ public class SendServer extends AppCompatActivity {
         });
 
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +63,7 @@ public class SendServer extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        **/
     }
 
     public void sendData(View v) {
