@@ -17,7 +17,7 @@ import java.util.ArrayList;
 // Custom ListView http://www.androidinterview.com/android-custom-listview-with-image-and-text-using-arrayadapter/
 
 //public class MetricListActivity extends AppCompatActivity, ListActivity {
-public class MetricListActivity extends ListActivity {
+public class MetricListActivity extends AppCompatActivity {
 
     private ListView listView2;
     //For bluetooth device list
@@ -39,10 +39,15 @@ public class MetricListActivity extends ListActivity {
 
         listView2 = (ListView) findViewById(R.id.listView2);
 
+        System.out.println("DATA:::::" + MainActivity.recievedMessage);
+
         JSONProcessor newData = null;
 
         try {
+            System.out.println("in the looppppppp");
             newData = new JSONProcessor(MainActivity.recievedMessage);
+
+            System.out.println("THE TEMPERATURE: " + newData.getMetric(newData.TEMPERATURE));
 
             metricValue[0] = newData.getMetric(newData.TEMPERATURE);
             metricValue[1] = newData.getMetric(newData.CONDUCTIVITY);
@@ -53,7 +58,10 @@ public class MetricListActivity extends ListActivity {
             e.printStackTrace();
         }
 
-        CustomListAdaptor adaptor = new CustomListAdaptor(this, metricName, metricValue);
+        //CustomListAdaptor adaptor = new CustomListAdaptor(this, metricName, metricValue);
+        //System.out.println("ADAPTOR" + adaptor.toString());
+        ArrayList<String> temp = new ArrayList<String>();
+        temp.add(metricName[0] + " " + metricValue[0]);
 
 
 //        metricList.add("Temperature           15 deg C");
@@ -63,7 +71,9 @@ public class MetricListActivity extends ListActivity {
 
         metricListAdapter=new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
-                metricList);
+                temp);
+
+        //metricListAdapter.add("Temperature: 0");
 
         listView2.setAdapter(metricListAdapter);
 
@@ -78,12 +88,9 @@ public class MetricListActivity extends ListActivity {
                 selectedMetric = itemSelected;
                 selectedValue = "" + metricValue[position];
 
-                if (position == 0) {
-                    Intent intent = new Intent(MetricListActivity.this, SingleMetricDisplay.class);
-                    startActivity(intent);
+                Intent intent = new Intent(MetricListActivity.this, SingleMetricDisplay.class);
+                startActivity(intent);
                 }
-
-            }
         });
     }
 }

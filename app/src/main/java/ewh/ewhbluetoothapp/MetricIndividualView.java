@@ -19,7 +19,9 @@ public class MetricIndividualView extends AppCompatActivity {
         metricName = (TextView) findViewById(R.id.textView2);
         metricValue = (TextView) findViewById(R.id.textView3);
 
+        System.out.println("SELECTED METRIC VALUE " + MetricListActivity.selectedMetric);
+
         metricName.setText(MetricListActivity.selectedMetric);
-        metricValue.setText(MetricListActivity.selectedValue);
+        //metricValue.setText(MetricListActivity.selectedValue);
     }
 }
