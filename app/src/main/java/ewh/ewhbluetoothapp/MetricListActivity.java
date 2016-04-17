@@ -61,7 +61,13 @@ public class MetricListActivity extends AppCompatActivity {
         //CustomListAdaptor adaptor = new CustomListAdaptor(this, metricName, metricValue);
         //System.out.println("ADAPTOR" + adaptor.toString());
         ArrayList<String> temp = new ArrayList<String>();
-        temp.add(metricName[0] + " " + metricValue[0]);
+
+        temp.add(metricName[0] + " - " + metricValue[0] + " deg C");
+        temp.add(metricName[1] + " - " + metricValue[1] + " units");
+        temp.add(metricName[2] + " - " + metricValue[2] + " units");
+        temp.add(metricName[3] + " - " + metricValue[3] + " units");
+        temp.add(metricName[4] + " - " + metricValue[4] + " units");
+
 
 
 //        metricList.add("Temperature           15 deg C");
