@@ -1,6 +1,8 @@
 package ewh.ewhbluetoothapp;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,9 +15,11 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,7 +39,11 @@ public class SendServer extends AppCompatActivity {
 
     Button button;
     TextView value;
-    String strValue;
+    String strValue = "{\"TEMPERATURE\":\"20\"," +
+                        "\"PH\":\"30\"," +
+                        "\"TURBIDITY\":\"40\"," +
+                        "\"CONDUCTIVITY\":\"50\"," +
+                        "\"USAGE\":\"60\"}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,45 +75,65 @@ public class SendServer extends AppCompatActivity {
     }
 
     public void sendData(View v) {
-        strValue = value.getText().toString();
-        JSONObject wellData = new JSONObject();
-
+        //strValue = value.getText().toString();
+        JSONProcessor wellData = null;
         try {
-            wellData.put("value1", strValue);
-        } catch (JSONException e) {
+            wellData = new JSONProcessor(strValue);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (wellData.length() > 0) {
-            new SendToServer().execute(String.valueOf(wellData));
-        }
+
+        new SendToServer().execute(String.valueOf(wellData));
     }
 
     class SendToServer extends AsyncTask<String, String, String> {
 
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         protected String doInBackground(String... params) {
             String JsonResponse = null;
             String JsonDATA = params[0];
+
+            System.out.println(JsonDATA);
 
             // Create URL object for server connection
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try {
                 // Open URL connection
-                URL url = new URL("http://example.com/");
+                URL url = new URL("http://requestb.in/x3f01gx3");
                 urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
+                //urlConnection.setDoOutput(true);
 
                 // Set headers and method
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("TO SET", "TO SET");
+                //urlConnection.setRequestMethod("POST");
+                //urlConnection.setRequestProperty("TO SET", "TO SET");
+
+                urlConnection.setDoOutput( true );
+                urlConnection.setInstanceFollowRedirects( false );
+                urlConnection.setRequestMethod( "POST" );
+                urlConnection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+                urlConnection.setRequestProperty( "charset", "utf-8");
+                //urlConnection.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+                urlConnection.setUseCaches( false );
 
                 // Write json data
-                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-                writer.write(JsonDATA);
+            //   Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+            //    writer.write("poisdjf");
 
-                writer.close();
+                try( DataOutputStream wr = new DataOutputStream( urlConnection.getOutputStream())) {
+                    wr.writeChars("ljsdfksdfjlsdkj");
+                }
+                catch (Exception e)
+                {
+                    System.out.println("SENDING REQUEST FAILED");
+                }
 
+                System.out.println("SENT TO SERVER");
+
+            //    writer.close();
+
+                /*
                 // Input Stream
                 InputStream inputStream = urlConnection.getInputStream();
 
@@ -116,6 +144,7 @@ public class SendServer extends AppCompatActivity {
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
+                /*
                 // Get response and convert to string
                 String inputLine;
                 while ((inputLine = reader.readLine()) != null) {
@@ -129,6 +158,7 @@ public class SendServer extends AppCompatActivity {
                     // Response datat
                     return JsonResponse;
                 }
+                **/
 
             } catch (IOException e) {
                 e.printStackTrace();

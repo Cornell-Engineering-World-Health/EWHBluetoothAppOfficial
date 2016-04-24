@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
+        Intent intent = new Intent(MainActivity.this, SendServer.class);
+        startActivity(intent);
+
         /* UNCOMMENT FOR FRONTEND TESTING
         frontEndListItems.add("Well Monitor");
         frontEndListItems.add("Other Device 1");
@@ -84,8 +87,11 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(frontEndAdapter);
         **/
 
+        /*UNCOMMENT THIS
         adapter = BluetoothAdapter.getDefaultAdapter();
         adapter.startDiscovery();
+
+
 
         //Facilitate communication between components
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String itemSelected = frontEndAdapter.getItem(position);
+                String itemSelected = (String) listView.getAdapter().getItem(position);
                 System.out.println("Item selected: " + itemSelected);
 
                 while (recievedMessage.equals("")) {
@@ -106,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        **/
     }
 
     @Override
@@ -137,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
     public void getJson(int deviceNumber)
     {
         BluetoothDevice device = devices.get(deviceNumber);
+        System.out.println("DEVICE CONNECTING TO: " + devices.get(deviceNumber).getName());
 
         //Opening a bluetooth socket
         BluetoothSocket socket = null;
@@ -149,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             socket.connect();
 
+            System.out.println("SUCCESSFUL CONNECT!!!!");
+
             InputStream in = null;
             OutputStream out = null;
 
@@ -160,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 byte[] buffer = new byte[1024];
                 int bytes;
 
-                while(true)
-                {
+               // while(true)
+                //{
                             /*
                             Note to self: current state is that the message is being recieved succesfully from
                             the server socket, but is not printing as a string message
@@ -231,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     } catch (IOException e) {
-                        break;
+                       // break;
                     }
-                }
+               // }
 
                 socket.close();
 
