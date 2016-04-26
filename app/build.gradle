@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
 }
 
 dependencies {
@@ -25,4 +29,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile files('src/main/java/ewh/ewhbluetoothapp/json-simple-1.1.1.jar')
+    compile files('src/main/java/ewh/ewhbluetoothapp/org.apache.commons.httpclient.jar')
+    compile files('src/main/java/ewh/ewhbluetoothapp/commons-codec-1.10.jar')
+    compile files('src/main/java/ewh/ewhbluetoothapp/commons-logging-1.2.jar')
 }

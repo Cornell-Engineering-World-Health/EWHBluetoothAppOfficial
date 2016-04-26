@@ -13,9 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
+
+import android.os.StrictMode;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -76,6 +83,34 @@ public class SendServer extends AppCompatActivity {
 
     public void sendData(View v) {
         //strValue = value.getText().toString();
+
+        String stringToReverse = "hithere";
+
+        URL url = null;
+        try {
+            url = new URL("http://requestb.in/133sa1w1");
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+
+            OutputStreamWriter out = new OutputStreamWriter(
+                connection.getOutputStream());
+        out.write("string=" + stringToReverse);
+        out.close();
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()));
+        String decodedString;
+        while ((decodedString = in.readLine()) != null) {
+            System.out.println(decodedString);
+        }
+        in.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
         JSONProcessor wellData = null;
         try {
             wellData = new JSONProcessor(strValue);
@@ -84,6 +119,7 @@ public class SendServer extends AppCompatActivity {
         }
 
         new SendToServer().execute(String.valueOf(wellData));
+        **/
     }
 
     class SendToServer extends AsyncTask<String, String, String> {
