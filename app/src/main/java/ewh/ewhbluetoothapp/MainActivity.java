@@ -259,6 +259,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         } catch (IOException e) {
+            Log.e("",e.getMessage());
+            try {
+                System.out.println("Couldn't connect, trying fallback...");
+                socket =(BluetoothSocket) device.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(device,1);
+                socket.connect();
+                System.out.println("Connected");
+        }
+		catch (Exception e2) {
             System.out.println("UNABLE TO CONNECT BLUETOOTH SOCKET FROM DEVICE: " + device.getName());
             e.printStackTrace();
         }
